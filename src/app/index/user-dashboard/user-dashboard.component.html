@@ -1,0 +1,112 @@
+<button (click)="open()">Click</button>
+
+<div class="center-align">
+  <div class="center">
+    <h2 class="example-h2">Search User deatils</h2>
+    <!-- <form [formGroup]="userSearchForm" (ngSubmit)="searchUser()">
+        <mat-form-field class="form-group">
+          <mat-label>Search User</mat-label>
+          <input type="tel" matInput formControlName="searchQuery" placeholder="Contact number">
+          <mat-error *ngIf="uSForm.searchQuery.errors && uSForm.searchQuery.touched">
+            <mat-error *ngIf="uSForm.searchQuery.errors.required">Search Query is required</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <button [disabled]="userSearchForm.invalid" type="submit" mat-raised-button color="primary">
+          <mat-icon matSuffix>search</mat-icon> Search
+        </button>
+      </form> -->
+
+  </div>
+</div>
+
+
+
+<mat-form-field style="width:300px">
+  <mat-label>Search User</mat-label>
+  <input type="tel" (keyup)="applyFilter($event.target.value)" matInput placeholder="Enter query's">
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
+
+<div class="mat-elevation-z8">
+
+
+  <mat-table #table [dataSource]="dataSource">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <!-- Firstname Column -->
+    <ng-container matColumnDef="firstname">
+      <mat-header-cell *matHeaderCellDef>
+        Name
+        <div>
+          <mat-form-field>
+            <input matInput class="form-field" [formControl]="firstNameFilter" placeholder="Postion Filter">
+          </mat-form-field>
+        </div>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.firstname}} </mat-cell>
+    </ng-container>
+
+    <!-- Lastname Column -->
+    <ng-container matColumnDef="lastname">
+      <mat-header-cell *matHeaderCellDef> 
+        Father name
+
+        <div>
+          <mat-form-field>
+            <input matInput class="form-field" [formControl]="lastNameFilter" placeholder="Father name Filter">
+          </mat-form-field>
+        </div>
+
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lastname}} </mat-cell>
+    </ng-container>
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="address1">
+      <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.address1}} </mat-cell>
+    </ng-container>
+
+    <!-- Village Column -->
+    <ng-container matColumnDef="address2">
+      <mat-header-cell *matHeaderCellDef> Village </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.address2}} </mat-cell>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="district">
+      <mat-header-cell *matHeaderCellDef> District and State </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.district}}</mat-cell>
+    </ng-container>
+    <!-- Phone Column -->
+    <ng-container matColumnDef="state">
+      <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.state}}</mat-cell>
+    </ng-container>
+
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>
+
+
+<!-- Copyright 2019 Google Inc. All Rights Reserved.
+        Use of this source code is governed by an MIT-style license that
+        can be found in the LICENSE file at http://angular.io/license -->

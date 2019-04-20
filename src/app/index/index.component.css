@@ -1,0 +1,27 @@
+.center-align{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.center-align .center{
+    width: 520px;
+}
+
+.mat-form-field{
+    width: 100%;
+}
+
+button{
+    margin-right: 15px;
+}
+
+/* Sidenav */
+
+.mat-sidenav{
+    min-width: 280px;
+}
+
+.mat-sidenav-content{
+    min-height: 560px;
+}

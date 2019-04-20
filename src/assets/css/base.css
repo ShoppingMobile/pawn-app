@@ -1,0 +1,12 @@
+/*Side-nav */
+.mat-nav-list .mat-list-item.active{
+    background: rgba(0,0,0,.2);
+}
+
+button.mat-raised-button{
+    margin-right: 15px;
+}
+
+.app-content{
+    padding: 15px;
+}

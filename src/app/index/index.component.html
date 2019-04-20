@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+  <button mat-button class="app-menu-button" (click)="sidenav.toggle()">
+    <i class="material-icons">menu</i>
+  </button>
+  <span class="title">User Details Maintain</span>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened class="app-sidenav" color="primary">
+    <app-side-nav></app-side-nav>
+  </mat-sidenav>
+  <div class="app-content">
+    <mat-card>
+      <mat-card-content>
+        <router-outlet></router-outlet>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</mat-sidenav-container>
