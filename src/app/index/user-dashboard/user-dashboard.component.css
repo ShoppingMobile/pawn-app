@@ -1,3 +1,14 @@
 .mat-form-field-suffix .mat-icon{
     color: rgba(0,0,0,.7)
 }
+
+.filter-head, .filter-input,.mat-header-cell{
+    width:100%;
+    display: inline-block;
+}
+.filter-input{
+    height: 40px;
+}
+.mat-header-cell{
+    padding: 8px 10px;
+}

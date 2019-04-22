@@ -21,12 +21,15 @@
 
 
 
-<mat-form-field style="width:300px">
+<!-- <mat-form-field style="width:300px">
   <mat-label>Search User</mat-label>
   <input type="tel" (keyup)="applyFilter($event.target.value)" matInput placeholder="Enter query's">
   <mat-icon matSuffix>search</mat-icon>
-</mat-form-field>
-
+</mat-form-field> -->
+<!-- <mat-form-field>
+  <input matInput [ngModel]="globalFilter" (ngModelChange)="applyFilter($event)" placeholder="Filter">
+</mat-form-field> -->
+<input matInput [ngModel]="globalFilter" (ngModelChange)="applyFilter($event)" placeholder="Filter">
 
 <div class="mat-elevation-z8">
 
@@ -42,8 +45,8 @@
     <!-- Firstname Column -->
     <ng-container matColumnDef="firstname">
       <mat-header-cell *matHeaderCellDef>
-        Name
-        <div>
+        <div class="filter-head"> Name </div>
+        <div class="filter-input"> 
           <mat-form-field>
             <input matInput class="form-field" [formControl]="firstNameFilter" placeholder="Postion Filter">
           </mat-form-field>
@@ -55,9 +58,8 @@
     <!-- Lastname Column -->
     <ng-container matColumnDef="lastname">
       <mat-header-cell *matHeaderCellDef> 
-        Father name
-
-        <div>
+        <div class="filter-head">Father name</div>
+        <div class="filter-input"> 
           <mat-form-field>
             <input matInput class="form-field" [formControl]="lastNameFilter" placeholder="Father name Filter">
           </mat-form-field>
@@ -85,16 +87,6 @@
       <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
     </ng-container>
 
-    <!-- Phone Column -->
-    <ng-container matColumnDef="district">
-      <mat-header-cell *matHeaderCellDef> District and State </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.district}}</mat-cell>
-    </ng-container>
-    <!-- Phone Column -->
-    <ng-container matColumnDef="state">
-      <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.state}}</mat-cell>
-    </ng-container>
 
 
 
