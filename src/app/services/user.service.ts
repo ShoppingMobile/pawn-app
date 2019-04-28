@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { User} from '../types/user.type'
+import { Particular} from '../types/particular.type';
 
 import {Observable} from 'rxjs'
 
@@ -31,4 +32,28 @@ export class UserService{
         let serviceUrl="http://localhost:4201/getAllUser";  
         return this.http.get(serviceUrl)
     }
+    getUser(id:any){
+        let serviceUrl="http://localhost:4201/getUser";  
+        return this.http.post<User[]>(serviceUrl, {id:id}, {headers})
+    }
+
+    addParticularDetails(particularData:Particular):Observable<Particular[]>{        
+        let serviceUrl="http://localhost:4201/addParticular";
+        return this.http.post<Particular[]>(serviceUrl, particularData, {headers})
+    }
+
+    editParticular(particularData:Particular, particularId:number, userId:number):Observable<Particular[]>{ 
+        let serviceUrl="http://localhost:4201/editParticular";
+        return this.http.put<Particular[]>(serviceUrl, {data:particularData, particularId:particularId, userId: userId}, {headers})
+    }
+
+    getAllParticularUser(id:any){
+        let serviceUrl="http://localhost:4201/getAllParticularUser";  
+        return this.http.post<User[]>(serviceUrl, {id:id}, {headers})
+    }
+
+
+
+
+
 }

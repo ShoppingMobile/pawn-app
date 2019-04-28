@@ -1,66 +1,38 @@
-<button (click)="open()">Click</button>
-
-<div class="center-align">
-  <div class="center">
-    <h2 class="example-h2">Search User deatils</h2>
-    <!-- <form [formGroup]="userSearchForm" (ngSubmit)="searchUser()">
-        <mat-form-field class="form-group">
-          <mat-label>Search User</mat-label>
-          <input type="tel" matInput formControlName="searchQuery" placeholder="Contact number">
-          <mat-error *ngIf="uSForm.searchQuery.errors && uSForm.searchQuery.touched">
-            <mat-error *ngIf="uSForm.searchQuery.errors.required">Search Query is required</mat-error>
-          </mat-error>
-        </mat-form-field>
-        <button [disabled]="userSearchForm.invalid" type="submit" mat-raised-button color="primary">
-          <mat-icon matSuffix>search</mat-icon> Search
-        </button>
-      </form> -->
-
-  </div>
-</div>
-
-
-
-<!-- <mat-form-field style="width:300px">
-  <mat-label>Search User</mat-label>
-  <input type="tel" (keyup)="applyFilter($event.target.value)" matInput placeholder="Enter query's">
-  <mat-icon matSuffix>search</mat-icon>
-</mat-form-field> -->
-<!-- <mat-form-field>
-  <input matInput [ngModel]="globalFilter" (ngModelChange)="applyFilter($event)" placeholder="Filter">
-</mat-form-field> -->
-<input matInput [ngModel]="globalFilter" (ngModelChange)="applyFilter($event)" placeholder="Filter">
-
-<div class="mat-elevation-z8">
-
-
+<h2 class="example-h2">Search User deatils</h2>
+<button (click)="addUserDetails()" type="button" mat-raised-button color="primary">Add User</button>
+<br/><br/>
+<div class="mat-elevation-z8">  
   <mat-table #table [dataSource]="dataSource">
 
     <!-- ID Column -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+      <mat-cell *matCellDef="let element">
+        <a [routerLink]="['../user-details',element.id, element.firstname]">
+          {{element.id}}
+        </a>
+      </mat-cell>
     </ng-container>
 
     <!-- Firstname Column -->
     <ng-container matColumnDef="firstname">
       <mat-header-cell *matHeaderCellDef>
         <div class="filter-head"> Name </div>
-        <div class="filter-input"> 
-          <mat-form-field>
-            <input matInput class="form-field" [formControl]="firstNameFilter" placeholder="Postion Filter">
+        <div class="filter-input">
+          <mat-form-field appearance="outline">
+            <input matInput class="form-field" [formControl]="firstNameFilter" placeholder="Name Filter">
           </mat-form-field>
         </div>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.firstname}} </mat-cell>
+      <mat-cell *matCellDef="let element">{{element.firstname}} </mat-cell>
     </ng-container>
 
     <!-- Lastname Column -->
     <ng-container matColumnDef="lastname">
-      <mat-header-cell *matHeaderCellDef> 
+      <mat-header-cell *matHeaderCellDef>
         <div class="filter-head">Father name</div>
-        <div class="filter-input"> 
-          <mat-form-field>
+        <div class="filter-input">
+          <mat-form-field appearance="outline">
             <input matInput class="form-field" [formControl]="lastNameFilter" placeholder="Father name Filter">
           </mat-form-field>
         </div>
@@ -77,7 +49,14 @@
 
     <!-- Village Column -->
     <ng-container matColumnDef="address2">
-      <mat-header-cell *matHeaderCellDef> Village </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>
+        <div class="filter-head"> Village </div>
+        <div class="filter-input">
+          <mat-form-field appearance="outline">
+            <input matInput class="form-field" [formControl]="address2Filter" placeholder="Village Filter">
+          </mat-form-field>
+        </div>
+      </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.address2}} </mat-cell>
     </ng-container>
 
@@ -86,9 +65,6 @@
       <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
     </ng-container>
-
-
-
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

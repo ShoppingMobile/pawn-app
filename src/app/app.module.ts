@@ -8,19 +8,23 @@ import { AppRoutingModule} from '../app-routing.module';
 import { IndexComponent } from './index/index.component';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { UserComponent } from './index/user/user.component';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
-import { UserDashboardComponent } from './index/user-dashboard/user-dashboard.component';
+import { UserDashboardComponent, AddUserDialog } from './index/user-dashboard/user-dashboard.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { UserDetailsComponent, AddParticularDialog } from './index/user-details/user-details.component';
+import { AddParticularComponent } from './index/add-particular/add-particular.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IndexComponent,
-    UserComponent,
     SideNavComponent,
     UserDashboardComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    UserDetailsComponent,
+    AddParticularComponent,
+    AddParticularDialog,
+    AddUserDialog
   ],
   imports: [
     BrowserModule,
@@ -32,6 +36,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AddParticularDialog, AddUserDialog]
 })
 export class AppModule { }
