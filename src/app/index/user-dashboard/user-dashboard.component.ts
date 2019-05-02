@@ -1,24 +1,19 @@
 import { Component, OnInit, ViewChild, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
-import { MatPaginator, MatTableDataSource, MatSnackBar, MatSnackBarConfig } from '@angular/material';
-import { UserService } from 'src/app/services/user.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MessageService } from './message.service';
+import { MatPaginator, MatTableDataSource, MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Subscription } from 'rxjs/internal/Subscription';
 
-export interface PeriodicElement {
-  id: number,
-  firstname: string;
-  lastname: string;
-  address1: string;
-  address2: string;
-  phone: number;
-}
+import { UserService } from 'src/app/services/user.service';
+import { MessageService } from './message.service';
+import { Users } from '../../types/user.type';
+
 export interface DialogData {
   userId: number;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [];
+const usersData: Users[] = [];
 let config = new MatSnackBarConfig();
 config.duration = 2000;
 
@@ -26,14 +21,15 @@ config.duration = 2000;
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.css']
+  styleUrls: ['./user-dashboard.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UserDashboardComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'firstname', 'lastname', 'address1', 'address2', 'phone'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['firstname', 'lastname', 'address2', 'address1', 'phone', 'options'];
+  dataSource = new MatTableDataSource(usersData);
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  selectedUserId: number;
   firstNameFilter = new FormControl();
   address2Filter = new FormControl();
   globalFilter = '';
@@ -42,9 +38,16 @@ export class UserDashboardComponent implements OnInit {
   };
   lastNameFilter = new FormControl();
   userSearchForm: FormGroup;
-  searchQuery: any;
+  editUser: FormGroup;
   subscription: Subscription;
   message: any = "doctor";
+
+  public pageSize:number = 10;
+  public currentPage:number = 0;
+  public totalSize:number = 0;
+
+
+
   constructor(
     private messageService: MessageService,
     private fb: FormBuilder,
@@ -52,18 +55,29 @@ export class UserDashboardComponent implements OnInit {
     public snackBar: MatSnackBar,
     public dialog: MatDialog) {
     this.getAllUser();
-    this.userSearchForm = this.fb.group({
-      searchQuery: ["", Validators.required]
-    });
-
     this.subscription = this.messageService.getMessage().subscribe(message => {
       this.message = message;
       this.getAllUser();
     });
+  }
+  public handlePage(e: any) {
+    this.pageSize= e.pageSize;
+    console.log(e);
 
   }
 
+
   ngOnInit() {
+
+    this.editUser = this.fb.group({
+      firstname: ["", Validators.required],
+      lastname: ["", Validators.required],
+      address2: ["", Validators.required],
+      address1: ["", Validators.required],
+      phone: ["", Validators.required]
+    });
+
+
     this.firstNameFilter.valueChanges.subscribe((firstNameFilterValue) => {
       this.filteredValues['firstname'] = firstNameFilterValue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
@@ -82,20 +96,21 @@ export class UserDashboardComponent implements OnInit {
       this.dataSource.filterPredicate = this.customFilterPredicate();
     });
     this.dataSource.filterPredicate = this.customFilterPredicate();
+    this.dataSource.paginator = this.paginator;
+
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  applyFilter(filter) {
+  applyFilter(filter: string) {
     this.globalFilter = filter;
     this.dataSource.filter = JSON.stringify(this.filteredValues);
   }
 
   customFilterPredicate() {
-    const myFilterPredicate = (data: PeriodicElement, filter: string): boolean => {
-
+      const myFilterPredicate = (data: Users, filter: string): boolean => {
       var globalMatch = !this.globalFilter;
 
       if (this.globalFilter) {
@@ -111,16 +126,9 @@ export class UserDashboardComponent implements OnInit {
         data.firstname.toString().trim().toLowerCase().indexOf(searchString.firstname.toLowerCase()) !== -1 &&
         data.address2.toString().trim().toLowerCase().indexOf(searchString.address2.toLowerCase()) !== -1;
     }
-
     return myFilterPredicate;
   }
 
-  get uSForm() {
-    return this.userSearchForm.controls;
-  }
-  open() {
-    this.snackBar.open("Hello", 'Retry', config)
-  }
   addUserDetails(): void {
     const dialogRef = this.dialog.open(AddUserDialog, {
       width: '500px',
@@ -133,15 +141,70 @@ export class UserDashboardComponent implements OnInit {
   }
 
   getAllUser() {
+
     this.userService.getAllUser().subscribe(
       (res: any) => {
-        this.dataSource = new MatTableDataSource(res.result);
-     //   this.snackBar.open("User details added successfully", 'Close', config)
+        this.dataSource.data = res.result;
+        this.totalSize = res.result.length;
       }, (error) => {
         this.snackBar.open("Something went wrong, Please try again.", '', config)
       })
   }
+  optionUser(...arg) {  // (id, option) Parameters
+    let singleUser:any;
+    this.userService.getUser(arg[0]).subscribe((res:any) =>{
+
+      singleUser= res.result[0];
+      this.editUser.patchValue({
+        firstname: singleUser.firstname,
+        lastname: singleUser.lastname,
+        address2: singleUser.address2,
+        address1: singleUser.address1,
+        phone: singleUser.phone
+      });
+    });    
+    this.selectedUserId = arg[1] == 'edit' ? arg[0] : 0;
+    }
+  
+  isVisible(id) {
+    return this.selectedUserId === id;
+  }
+  editUsers() {
+    this.userService.editUser(this.editUser.value, this.selectedUserId).subscribe((res:any)=>{
+      this.getAllUser();
+      this.selectedUserId = 0;
+    });
+  }
+
+
+  get uSForm() {
+    return this.userSearchForm.controls;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @Component({
@@ -155,9 +218,7 @@ export class AddUserDialog implements OnInit {
   firstName: any;
   lastName: any;
   districtList = ["Ariyalur", "Chennai", "Coimbatore", "Cuddalore", "Dharampuri", "Dindigul", "Erode", "Kancheepuram", "Kanniyakumarai", "Karur", "Madurai", "Nagapattinam", "Namakkal", "Perambalur", "Pudukottai", "Ramanathapuram", "Salem", "Sivaganga", "Thanjavur", "Niligiris", "Theni", "Thiruvallur", "Thiruvarur", "Tiruchchirapalli", "Tirunelveli", "Tiruvannamalai", "Thoothukudi", "Vellore", "Villupuram", "Virudhnagar"];
-
   userSearchForm: FormGroup;
-  searchQuery: any;
   isUserLoggedIn: boolean;
 
   constructor(
@@ -177,10 +238,6 @@ export class AddUserDialog implements OnInit {
       district: ["", Validators.required],
       state: ["", Validators.required],
       contactnumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15)]]
-    })
-
-    this.userSearchForm = this.fb.group({
-      searchQuery: ["", Validators.required]
     })
   }
   onNoClick(): void {

@@ -13,6 +13,7 @@ import { UserDashboardComponent, AddUserDialog } from './index/user-dashboard/us
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { UserDetailsComponent, AddParticularDialog } from './index/user-details/user-details.component';
 import { AddParticularComponent } from './index/add-particular/add-particular.component';
+import { ParticularDashboardComponent, AddParticularsDialog } from './index/particular-dashboard/particular-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,9 @@ import { AddParticularComponent } from './index/add-particular/add-particular.co
     UserDetailsComponent,
     AddParticularComponent,
     AddParticularDialog,
-    AddUserDialog
+    AddUserDialog,
+    ParticularDashboardComponent,
+    AddParticularsDialog
   ],
   imports: [
     BrowserModule,
@@ -37,6 +40,6 @@ import { AddParticularComponent } from './index/add-particular/add-particular.co
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [AddParticularDialog, AddUserDialog]
+  entryComponents: [AddParticularDialog, AddUserDialog, AddParticularsDialog]
 })
 export class AppModule { }

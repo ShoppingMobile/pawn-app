@@ -1,0 +1,117 @@
+<h2 class="example-h2">Particular Dashboard</h2>
+<button (click)="addParticularsDetails()" type="button" mat-raised-button color="primary">Add Particular</button>
+<br /><br />
+
+
+<form [formGroup]="editParticular" (ngSubmit)="editParticulars(dataSource)">
+  <mat-table #table [dataSource]="dataSource">
+    <!-- Particular Name Column -->
+    <ng-container matColumnDef="particular_name">
+      <mat-header-cell *matHeaderCellDef>
+        Particular Name
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngIf="!isVisible(element.particular_id)">{{element.particular_name}}</div>
+        <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.particular_id)">
+          <mat-label>Particular Name</mat-label>
+          <input formControlName="particular_name" matInput type="text" [(value)]="element.particular_name"
+            name="particular-name" autocomplete="off">
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+          <svg style="width: 15px;height: 16px;margin-bottom: -3px;" viewBox="0 0 24 24">
+              <path fill="#555" d="M8,3H18L17,5H13.74C14.22,5.58 14.58,6.26 14.79,7H18L17,9H15C14.75,11.57 12.74,13.63 10.2,13.96V14H9.5L15.5,21H13L7,14V12H9.5V12C11.26,12 12.72,10.7 12.96,9H7L8,7H12.66C12.1,5.82 10.9,5 9.5,5H7L8,3Z" />
+          </svg>
+        <div *ngIf="!isVisible(element.particular_id)">{{element.amount}}</div>
+        <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.particular_id)">
+          <input formControlName="amount" matInput type="text" [(value)]="element.amount" name="amount"
+            autocomplete="off">
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+    <!-- Firstname Column -->
+    <ng-container matColumnDef="firstname">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.firstname}}
+        <!-- <div *ngIf="!isVisible(element.particular_id)">{{element.firstname}}</div> -->
+        <!-- <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.particular_id)">
+          <input formControlName="firstname" matInput type="text" [(value)]="element.firstname" name="amount"
+            autocomplete="off">
+        </mat-form-field> -->
+      </mat-cell>
+    </ng-container>
+
+    <!-- Village Column -->
+    <ng-container matColumnDef="address2">
+      <mat-header-cell *matHeaderCellDef> Village </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.address2}}
+        <!-- <div *ngIf="!isVisible(element.particular_id)">{{element.address2}}</div> -->
+        <!-- <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.particular_id)">
+          <input formControlName="amount" matInput type="text" [(value)]="element.amount" name="amount"
+            autocomplete="off">
+        </mat-form-field> -->
+      </mat-cell>
+    </ng-container>
+
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngIf="!isVisible(element.particular_id)">
+          {{element.status}}
+        </div>
+        <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.particular_id)">
+          <mat-select formControlName="status" [(value)]="element.status">
+            <mat-option *ngFor="let status of statusDetails" [value]="status">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Date  Column -->
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef> Date</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngIf="!isVisible(element.particular_id)">{{element.date | date: 'dd/MM/yyyy'}} </div>
+        <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.particular_id)">
+          <input formControlName="date" matInput [matDatepicker]="dp" placeholder="Verbose datepicker"
+            value="{{element.date}}">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp></mat-datepicker>
+        </mat-form-field>
+      </mat-cell>
+
+    </ng-container>
+    <!-- user id Column -->
+    <ng-container matColumnDef="option">
+      <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngIf="!isVisible(element.particular_id)">
+          <button type="button" mat-raised-button color="primary"
+            (click)="optionParticular(element.particular_id,'edit')">Edit</button>
+        </div>
+        <div *ngIf="isVisible(element.particular_id)">
+          <button type="submit" mat-raised-button color="primary">Save</button>
+          <button type="button" mat-raised-button color="secondary"
+            (click)="optionParticular(element.particular_id,'cancel')">Cancel</button>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+
+</form>
+<mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>

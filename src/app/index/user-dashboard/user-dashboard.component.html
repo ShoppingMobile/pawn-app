@@ -1,18 +1,20 @@
-<h2 class="example-h2">Search User deatils</h2>
+<h2 class="example-h2">User Dashboard</h2>
 <button (click)="addUserDetails()" type="button" mat-raised-button color="primary">Add User</button>
-<br/><br/>
-<div class="mat-elevation-z8">  
+<br /><br />
+<div class="mat-elevation-z8">
+
+  <form [formGroup]="editUser" (ngSubmit)="editUsers(dataSource)">
   <mat-table #table [dataSource]="dataSource">
 
     <!-- ID Column -->
-    <ng-container matColumnDef="id">
+    <!-- <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
       <mat-cell *matCellDef="let element">
         <a [routerLink]="['../user-details',element.id, element.firstname]">
           {{element.id}}
         </a>
       </mat-cell>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Firstname Column -->
     <ng-container matColumnDef="firstname">
@@ -20,11 +22,23 @@
         <div class="filter-head"> Name </div>
         <div class="filter-input">
           <mat-form-field appearance="outline">
-            <input matInput class="form-field" [formControl]="firstNameFilter" placeholder="Name Filter">
+            <input matInput class="form-field" [formControl]="firstNameFilter" placeholder="Name Filter"
+              autocomplete="off">
           </mat-form-field>
         </div>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.firstname}} </mat-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngIf="!isVisible(element.id)">
+            <a [routerLink]="['../user-details',element.id, element.firstname]">
+              {{element.firstname}}
+            </a>        
+        </div>
+        <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.id)">
+          <mat-label>Name</mat-label>
+          <input formControlName="firstname" matInput type="text" [(value)]="element.firstname"
+            name="firstname" autocomplete="off">
+        </mat-form-field>
+      </mat-cell>
     </ng-container>
 
     <!-- Lastname Column -->
@@ -33,18 +47,21 @@
         <div class="filter-head">Father name</div>
         <div class="filter-input">
           <mat-form-field appearance="outline">
-            <input matInput class="form-field" [formControl]="lastNameFilter" placeholder="Father name Filter">
+            <input matInput class="form-field" [formControl]="lastNameFilter" placeholder="Fathername"
+              autocomplete="off">
           </mat-form-field>
         </div>
-
       </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.lastname}} </mat-cell>
-    </ng-container>
-
-    <!-- Address Column -->
-    <ng-container matColumnDef="address1">
-      <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.address1}} </mat-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngIf="!isVisible(element.id)">
+            {{element.lastname}} 
+        </div>
+        <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.id)">
+          <mat-label>Fatherame</mat-label>
+          <input formControlName="lastname" matInput type="text" [(value)]="element.lastname"
+            name="lastname" autocomplete="off">
+        </mat-form-field>
+      </mat-cell>
     </ng-container>
 
     <!-- Village Column -->
@@ -53,25 +70,125 @@
         <div class="filter-head"> Village </div>
         <div class="filter-input">
           <mat-form-field appearance="outline">
-            <input matInput class="form-field" [formControl]="address2Filter" placeholder="Village Filter">
+            <input matInput class="form-field" [formControl]="address2Filter" placeholder="Village Filter"
+              autocomplete="off">
           </mat-form-field>
         </div>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.address2}} </mat-cell>
+      <mat-cell *matCellDef="let element">        
+         <div *ngIf="!isVisible(element.id)">
+            {{element.address2}}
+        </div>
+        <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.id)">
+          <mat-label>Village</mat-label>
+          <input formControlName="address2" matInput type="text" [(value)]="element.address2"
+            name="address2" autocomplete="off">
+        </mat-form-field>
+        </mat-cell>
+    </ng-container>
+
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="address1">
+      <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
+      <mat-cell *matCellDef="let element"> 
+
+          <div *ngIf="!isVisible(element.id)">
+              {{element.address1}} 
+          </div>
+          <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.id)">
+            <mat-label>Address</mat-label>
+            <input formControlName="address1" matInput type="text" [(value)]="element.address1"
+              name="address1" autocomplete="off">
+          </mat-form-field>
+
+      </mat-cell>
     </ng-container>
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">
       <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+      <mat-cell *matCellDef="let element">
+
+          <div *ngIf="!isVisible(element.id)">
+              {{element.phone}} 
+          </div>
+          <mat-form-field class="form-group" appearance="outline" *ngIf="isVisible(element.id)">
+            <mat-label>Phone</mat-label>
+            <input formControlName="phone" matInput type="number" [(value)]="element.phone"
+              name="phone" autocomplete="off">
+          </mat-form-field>
+
+      </mat-cell>
+    </ng-container>
+
+    <!-- Options Column -->
+
+    <ng-container matColumnDef="options">
+      <mat-header-cell *matHeaderCellDef> Options </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+
+        <!-- {{element.phone}}  -->
+        <div *ngIf="!isVisible(element.id)">
+          <button type="button" mat-raised-button color="primary"
+            (click)="optionUser(element.id,'edit')">Edit</button>
+        </div>
+        <div *ngIf="isVisible(element.id)">
+          <button type="submit" mat-raised-button color="primary">Save</button>
+          <button type="button" mat-raised-button color="secondary"
+            (click)="optionUser(element.id,'cancel')">Cancel</button>
+        </div>
+
+
+      </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
 
-  <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-table>
+</form>
+
+
+  <mat-paginator  (page)="pageEvent = handlePage($event)" [length]="totalSize" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
+
+  <!-- 
+  <mat-paginator [length]="totalLength"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="pageEvent = $event">
+</mat-paginator> -->
+
+  <!-- <mat-form-field>
+      List length:
+      <input matInput [(ngModel)]="length">
+    </mat-form-field>
+    
+    <mat-form-field>
+      Page size:
+      <input matInput [(ngModel)]="pageSize">
+    </mat-form-field>
+    <mat-form-field>
+      Page size options:
+      <input matInput
+             [ngModel]="pageSizeOptions"
+             (ngModelChange)="setPageSizeOptions($event)">
+    </mat-form-field>
+    
+    <div *ngIf="pageEvent">
+      <h5>Page Change Event Properties</h5>
+      <div>List length: {{pageEvent.length}}</div>
+      <div>Page size: {{pageEvent.pageSize}}</div>
+      <div>Page index: {{pageEvent.pageIndex}}</div>
+    </div>
+
+  <mat-paginator [length]="length"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="pageEvent = $event">
+</mat-paginator> -->
+
 </div>
 
 

@@ -37,6 +37,11 @@ export class UserService{
         return this.http.post<User[]>(serviceUrl, {id:id}, {headers})
     }
 
+    editUser(...data:any){
+        let serviceUrl="http://localhost:4201/editUser";  
+        return this.http.put(serviceUrl, {data:data[0], userId:data[1]}, {headers})
+    }
+
     addParticularDetails(particularData:Particular):Observable<Particular[]>{        
         let serviceUrl="http://localhost:4201/addParticular";
         return this.http.post<Particular[]>(serviceUrl, particularData, {headers})
@@ -51,6 +56,20 @@ export class UserService{
         let serviceUrl="http://localhost:4201/getAllParticularUser";  
         return this.http.post<User[]>(serviceUrl, {id:id}, {headers})
     }
+    getAllParticularAllUser(){
+        let serviceUrl="http://localhost:4201/getAllParticularAllUser";  
+        return this.http.get<User[]>(serviceUrl)
+    }
+    getSingleParticular(particularId){
+        let serviceUrl="http://localhost:4201/getSingleParticular";  
+        return this.http.post(serviceUrl,{particularId:particularId},  {headers});
+    }
+
+    searchUserId(){
+        let serviceUrl="http://localhost:4201/searchUserId";  
+        return this.http.get<User[]>(serviceUrl)
+    }
+
 
 
 
