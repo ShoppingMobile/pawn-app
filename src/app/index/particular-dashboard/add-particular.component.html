@@ -1,9 +1,8 @@
-<h3>Add Particular for {{data.userName}}</h3>
+<h3>Add Particular</h3>
 
 <form [formGroup]="particularForm" (ngSubmit)="addParticular()">
     <mat-form-field class="form-group" appearance="outline">
-        <input type="text" placeholder="Select User" aria-label="Assignee" matInput [formControl]="myControl"
-            [matAutocomplete]="auto">
+        <input type="text" placeholder="Select User" aria-label="Assignee" matInput [formControl]="myControl"/>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                 {{option.firstname}}, {{option.address2}}
@@ -30,5 +29,5 @@
         </mat-select>
     </mat-form-field>
     <button type="submit" mat-raised-button color="primary">Save</button>
-    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Cancel</button>
+    <button mat-button cdkFocusInitial>Cancel</button>
 </form>

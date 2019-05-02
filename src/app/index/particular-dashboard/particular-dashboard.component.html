@@ -3,7 +3,7 @@
 <br /><br />
 
 
-<form [formGroup]="editParticular" (ngSubmit)="editParticulars(dataSource)">
+<form [formGroup]="editParticular" (ngSubmit)="editParticulars()">
   <mat-table #table [dataSource]="dataSource">
     <!-- Particular Name Column -->
     <ng-container matColumnDef="particular_name">

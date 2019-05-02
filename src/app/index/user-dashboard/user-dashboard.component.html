@@ -3,7 +3,7 @@
 <br /><br />
 <div class="mat-elevation-z8">
 
-  <form [formGroup]="editUser" (ngSubmit)="editUsers(dataSource)">
+  <form [formGroup]="editUser" (ngSubmit)="editUsers()">
   <mat-table #table [dataSource]="dataSource">
 
     <!-- ID Column -->
@@ -150,7 +150,7 @@
 </form>
 
 
-  <mat-paginator  (page)="pageEvent = handlePage($event)" [length]="totalSize" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+  <mat-paginator  [length]="totalSize" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
 
   <!-- 
