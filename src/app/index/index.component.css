@@ -53,6 +53,7 @@ button{
 }
 .mat-table .mat-header-cell, .mat-table .mat-cell {
     padding-right: 8px;
+    padding-top: 8px;
 }
 
 
