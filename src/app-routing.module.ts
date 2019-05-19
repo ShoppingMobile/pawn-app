@@ -10,19 +10,18 @@ import { ParticularDashboardComponent } from './app/index/particular-dashboard/p
 
 const routes:Routes=[
     {path:"index", component:IndexComponent, children:[
-        {path:"",component:UserDashboardComponent},
         {path:'user-dashbaord', component: UserDashboardComponent},
         {path:'particular-dashbaord', component: ParticularDashboardComponent},
-        {path:'user-details/:id/:name' ,component: UserDetailsComponent}
-        
+        {path:'user-details/:id/:name' ,component: UserDetailsComponent},
+        {path:"", redirectTo: 'user-dashbaord', pathMatch: 'full'},
     ]},
-    {path:"", redirectTo: '/index', pathMatch: 'full'},
+    {path:"", redirectTo: '/index/user-dashbaord', pathMatch: 'full'},
 ]
 
 
 @NgModule({
     exports: [RouterModule],
-    imports:[RouterModule.forRoot(routes)]
+    imports:[RouterModule.forRoot(routes, { useHash: true })]
   })
   export class AppRoutingModule { }
 
